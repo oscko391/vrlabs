@@ -1,0 +1,88 @@
+<Scene>
+<IMPORT inlineDEF="H3D_EXPORTS" exportedDEF="HDEV" AS="HDEV"/>
+<ForceField DEF="MyForceField" force="0 0 0"/>
+  <!--<NavigationInfo type="None"/>-->
+  <Transform translation="-0.1 0 0">
+    <Shape DEF="BOX">
+      <Appearance>
+        <Material DEF="cubeMaterial" diffuseColor="0.8 0.5 0.2" />
+        <FrictionalSurface stiffness = "1400" damping="5" staticFriction="0.1" dynamicFriction="0.05" useRelativeValues="false" />
+      </Appearance>
+      <Box DEF="CUBE" size="0.06 0.06 0.06"/>
+    </Shape>
+  </Transform>
+  <Transform translation="0.2 0 0">
+    <Shape>
+      <Appearance>
+        <Material DEF="MyMaterial" diffuseColor="0.7 0.9 0.2" />
+        <FrictionalSurface DEF="RUBBER" stiffness="300" damping="1" staticFriction="0.95" dynamicFriction="0.7" useRelativeValues="false"/>
+      </Appearance>
+      <Sphere DEF = "MySphere" radius="0.04"/>
+    </Shape>
+  </Transform>
+  <Transform translation="0 0.09 0.05">
+    <Shape>
+      <Appearance>
+        <Material />
+        <ImageTexture url="perlin2d.png"
+                    DEF="IMT"
+                    repeatS="false"
+                    repeatT="false"/>
+        <DepthMapSurface stiffness ="400"
+                        maxDepth="0.006"
+                        staticFriction="0.6"
+                        dynamicFriction="0.38"
+                        whiteIsOut="true"
+                        useRelativeValues="false">
+            <ImageTexture containerField="depthMap" 
+                                        url="perlin2d.png"
+                                        repeatS="false"
+                                        repeatT="false"/>
+        </DepthMapSurface>
+      </Appearance>
+      <Box size="0.06 0.06 0.06"/>
+    </Shape>
+  </Transform>
+  
+
+
+  
+  
+  <Transform  translation="0 -0.07 0">
+    <Shape>
+      <Appearance>
+        <Material diffuseColor="0.76 0.3 0.2" />
+        <FrictionalSurface stiffness = "1400" damping="5" staticFriction="0.1" dynamicFriction="0.05" useRelativeValues="false" />
+      </Appearance>
+      <Rectangle2D size="0.1 0.1"/>
+    </Shape>
+  </Transform>
+  
+  
+  <Transform translation = "0 -0.07 -0.029">
+    <Shape>
+        <Appearance>
+            <Material diffuseColor="0.8 0.47 0.22" />
+            <FrictionalSurface USE="RUBBER"/>
+        </Appearance>
+        <Box size="0.06 0.06 0.06"/>
+    </Shape>
+  </Transform>
+
+  
+  
+  
+  <PythonScript DEF="PS" url="checkCollision.py" />
+  
+  <ROUTE fromNode="MySphere" fromField="isTouched"
+            toNode="PS" toField="changeColor"/>
+  <ROUTE fromNode="PS" fromField="changeColor"
+        toNode = "MyMaterial" toField="diffuseColor"/>
+        
+  <ROUTE fromNode="CUBE" fromField="isTouched"
+            toNode="PS" toField="changeCubeColor"/>
+  <ROUTE fromNode="PS" fromField="changeCubeColor"
+        toNode = "cubeMaterial" toField="diffuseColor"/>
+        
+  
+</Scene>

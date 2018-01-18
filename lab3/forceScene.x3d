@@ -1,0 +1,22 @@
+
+<Scene>
+<IMPORT inlineDEF="H3D_EXPORTS" exportedDEF="HDEV" AS="HDEV"/>
+<ForceField DEF="MyForceField" force="0 0 0"/>
+  <Transform>
+    <Shape>
+        <Appearance>
+            <Material diffuseColor="1 0 0"/>
+        </Appearance>
+    <Sphere DEF="ForceSphere" radius="0.08"/>
+    </Shape>
+  </Transform>
+
+  <!--<PythonScript DEF="HOOKEFORCE" url="hookesLaw.py" />-->
+  <PythonScript DEF="HOOKEFORCE" url="forceProbe.py" />
+  <ROUTE fromNode = "HDEV" fromField="trackerPosition"
+            toNode="HOOKEFORCE" toField="calcForce" />
+  <ROUTE fromNode="ForceSphere" fromField="isTouched"
+            toNode="HOOKEFORCE" toField="calcForce"/>
+  <ROUTE fromNode="HOOKEFORCE" fromField = "calcForce"
+            toNode="MyForceField" toField="force"/> 
+</Scene>
